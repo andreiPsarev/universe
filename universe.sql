@@ -44,6 +44,43 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: comet; Type: TABLE; Schema: public; Owner: freecodecamp
+--
+
+CREATE TABLE public.comet (
+    comet_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    orbit_period numeric,
+    size numeric,
+    description text
+);
+
+
+ALTER TABLE public.comet OWNER TO freecodecamp;
+
+--
+-- Name: comet_comet_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
+--
+
+CREATE SEQUENCE public.comet_comet_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.comet_comet_id_seq OWNER TO freecodecamp;
+
+--
+-- Name: comet_comet_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
+--
+
+ALTER SEQUENCE public.comet_comet_id_seq OWNED BY public.comet.comet_id;
+
+
+--
 -- Name: galaxy; Type: TABLE; Schema: public; Owner: freecodecamp
 --
 
@@ -129,7 +166,8 @@ CREATE TABLE public.planet (
     star_id integer NOT NULL,
     distance_from_star numeric,
     has_life boolean,
-    mass numeric
+    mass numeric,
+    description text
 );
 
 
@@ -167,7 +205,8 @@ CREATE TABLE public.star (
     galaxy_id integer NOT NULL,
     size numeric,
     is_main_sequence boolean NOT NULL,
-    luminosity integer
+    luminosity integer,
+    description text
 );
 
 
@@ -193,6 +232,13 @@ ALTER TABLE public.star_star_id_seq OWNER TO freecodecamp;
 --
 
 ALTER SEQUENCE public.star_star_id_seq OWNED BY public.star.star_id;
+
+
+--
+-- Name: comet comet_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.comet ALTER COLUMN comet_id SET DEFAULT nextval('public.comet_comet_id_seq'::regclass);
 
 
 --
@@ -224,6 +270,15 @@ ALTER TABLE ONLY public.star ALTER COLUMN star_id SET DEFAULT nextval('public.st
 
 
 --
+-- Data for Name: comet; Type: TABLE DATA; Schema: public; Owner: freecodecamp
+--
+
+INSERT INTO public.comet VALUES (1, 'Halley', 76, 11, 'Famous short-period comet');
+INSERT INTO public.comet VALUES (2, 'Hale-Bopp', 2530, 40, 'Bright comet visible to the naked eye');
+INSERT INTO public.comet VALUES (3, 'Encke', 3.3, 4.5, 'Shortest orbital period of any known comet');
+
+
+--
 -- Data for Name: galaxy; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
@@ -239,7 +294,6 @@ INSERT INTO public.galaxy VALUES (6, 'Small Magellanic Cloud', 7000, 3000000, 'I
 -- Data for Name: moon; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.moon VALUES (1, 'Moon', 1, 3474, true, 384400);
 INSERT INTO public.moon VALUES (2, 'Phobos', 2, 22, false, 9377);
 INSERT INTO public.moon VALUES (3, 'Deimos', 2, 12, false, 23460);
 INSERT INTO public.moon VALUES (4, 'Io', 4, 3643, true, 421800);
@@ -258,38 +312,58 @@ INSERT INTO public.moon VALUES (16, 'Titania', 6, 1577.6, false, 435000);
 INSERT INTO public.moon VALUES (17, 'Oberon', 6, 1522.8, false, 583520);
 INSERT INTO public.moon VALUES (18, 'Triton', 6, 2706.8, true, 354760);
 INSERT INTO public.moon VALUES (19, 'Nereid', 6, 340.0, false, 1176470);
+INSERT INTO public.moon VALUES (24, 'Janus', 5, 179, false, 192000);
+INSERT INTO public.moon VALUES (25, 'Epimetheus', 5, 116, false, 150000);
+INSERT INTO public.moon VALUES (26, 'Hyperion', 5, 266, false, 1480000);
+INSERT INTO public.moon VALUES (27, 'Phoebe', 5, 213, false, 1270000);
+INSERT INTO public.moon VALUES (28, 'Aegaeon', 5, 0.3, false, 274500);
+INSERT INTO public.moon VALUES (29, 'Pandora', 5, 81, false, 141700);
+INSERT INTO public.moon VALUES (30, 'Prometheus', 5, 86, false, 139400);
+INSERT INTO public.moon VALUES (31, 'Atlas', 5, 30, false, 137600);
+INSERT INTO public.moon VALUES (32, 'Dione', 5, 1122, false, 377400);
+INSERT INTO public.moon VALUES (33, 'Tethys', 5, 1060, false, 294660);
+INSERT INTO public.moon VALUES (34, 'Calypso', 5, 23, false, 294660);
+INSERT INTO public.moon VALUES (35, 'Telesto', 5, 12, false, 294660);
+INSERT INTO public.moon VALUES (1, 'Moon', 1, 3474, true, 384400);
 
 
 --
 -- Data for Name: planet; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.planet VALUES (1, 'Earth', 1, 1, true, 1.00);
-INSERT INTO public.planet VALUES (2, 'Mars', 1, 2, false, 0.11);
-INSERT INTO public.planet VALUES (3, 'Venus', 1, 0.7, false, 0.81);
-INSERT INTO public.planet VALUES (4, 'Jupiter', 1, 5, false, 317.8);
-INSERT INTO public.planet VALUES (5, 'Saturn', 1, 9, false, 95.2);
-INSERT INTO public.planet VALUES (6, 'Neptune', 1, 30, false, 17.1);
-INSERT INTO public.planet VALUES (7, 'Proxima b', 7, 0.05, NULL, 1.3);
-INSERT INTO public.planet VALUES (8, 'Alpha Centauri Bb', 2, 1.1, NULL, 1.1);
-INSERT INTO public.planet VALUES (9, 'Gliese 581g', 4, 0.15, NULL, 3.1);
-INSERT INTO public.planet VALUES (10, 'Kepler-452b', 5, 1.04, NULL, 5.0);
-INSERT INTO public.planet VALUES (11, '55 Cancri e', 2, 0.01, false, 8.63);
-INSERT INTO public.planet VALUES (12, 'HD 209458 b', 4, 0.047, false, 0.69);
+INSERT INTO public.planet VALUES (1, 'Earth', 1, 1, true, 1.00, NULL);
+INSERT INTO public.planet VALUES (2, 'Mars', 1, 2, false, 0.11, NULL);
+INSERT INTO public.planet VALUES (3, 'Venus', 1, 0.7, false, 0.81, NULL);
+INSERT INTO public.planet VALUES (4, 'Jupiter', 1, 5, false, 317.8, NULL);
+INSERT INTO public.planet VALUES (5, 'Saturn', 1, 9, false, 95.2, NULL);
+INSERT INTO public.planet VALUES (6, 'Neptune', 1, 30, false, 17.1, NULL);
+INSERT INTO public.planet VALUES (7, 'Proxima b', 7, 0.05, NULL, 1.3, NULL);
+INSERT INTO public.planet VALUES (8, 'Alpha Centauri Bb', 2, 1.1, NULL, 1.1, NULL);
+INSERT INTO public.planet VALUES (9, 'Gliese 581g', 4, 0.15, NULL, 3.1, NULL);
+INSERT INTO public.planet VALUES (10, 'Kepler-452b', 5, 1.04, NULL, 5.0, NULL);
+INSERT INTO public.planet VALUES (11, '55 Cancri e', 2, 0.01, false, 8.63, NULL);
+INSERT INTO public.planet VALUES (12, 'HD 209458 b', 4, 0.047, false, 0.69, NULL);
 
 
 --
 -- Data for Name: star; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.star VALUES (1, 'Sun', 1, 1.00, true, 1);
-INSERT INTO public.star VALUES (2, 'Alpha Centauri A', 2, 1.10, true, 2);
-INSERT INTO public.star VALUES (3, 'Betelgeuse', 1, 1.20, false, 1);
-INSERT INTO public.star VALUES (4, 'Sirius A', 2, 1.00, true, 1);
-INSERT INTO public.star VALUES (5, 'Vega', 3, 0.90, true, 2);
-INSERT INTO public.star VALUES (6, 'Polaris', 3, 1.20, false, 1);
-INSERT INTO public.star VALUES (7, 'Proxima Centauri', 2, 0.20, true, 0);
-INSERT INTO public.star VALUES (8, 'Aldebaran', 1, 1.40, false, 1);
+INSERT INTO public.star VALUES (1, 'Sun', 1, 1.00, true, 1, NULL);
+INSERT INTO public.star VALUES (2, 'Alpha Centauri A', 2, 1.10, true, 2, NULL);
+INSERT INTO public.star VALUES (3, 'Betelgeuse', 1, 1.20, false, 1, NULL);
+INSERT INTO public.star VALUES (4, 'Sirius A', 2, 1.00, true, 1, NULL);
+INSERT INTO public.star VALUES (5, 'Vega', 3, 0.90, true, 2, NULL);
+INSERT INTO public.star VALUES (6, 'Polaris', 3, 1.20, false, 1, NULL);
+INSERT INTO public.star VALUES (7, 'Proxima Centauri', 2, 0.20, true, 0, NULL);
+INSERT INTO public.star VALUES (8, 'Aldebaran', 1, 1.40, false, 1, NULL);
+
+
+--
+-- Name: comet_comet_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
+--
+
+SELECT pg_catalog.setval('public.comet_comet_id_seq', 3, true);
 
 
 --
@@ -318,6 +392,22 @@ SELECT pg_catalog.setval('public.planet_planet_id_seq', 12, true);
 --
 
 SELECT pg_catalog.setval('public.star_star_id_seq', 8, true);
+
+
+--
+-- Name: comet comet_name_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.comet
+    ADD CONSTRAINT comet_name_key UNIQUE (name);
+
+
+--
+-- Name: comet comet_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.comet
+    ADD CONSTRAINT comet_pkey PRIMARY KEY (comet_id);
 
 
 --
